@@ -11,11 +11,20 @@ class Card(db.Model):
     question = db.Column(db.String, unique=True, nullable=False)
     answer = db.Column(db.String, nullable=False)
 
+class Collection(db.Model):
+    __tablename__ = 'collections'
+    id = db.Column(db.Integer, primary_key=True)
+    card_id = db.Column(db.Integer, db.ForeignKey('card.id'))
+
 with app.app_context():
     db.create_all()
 
 @app.route("/")
 def home():
+    return render_template("home.html")
+
+@app.route("/train")
+def train():
     cards = db.session.execute(db.select(Card)).scalars()
     return render_template("base.html", cards=cards)
 
