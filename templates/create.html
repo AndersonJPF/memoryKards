@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Kard
+{% endblock %}
+
+{% block main %}
+    <p style="text-align: center;">New Kard</p>
+    <div>
+      <form action="/add" method="post">
+        <div class="mb-3">
+          <input id="question" name="question" class="form-control mx-auto w-auto" type="text" placeholder="Question">
+        </div>
+        <div class="mb-3">
+          <input id="answer" name="answer" class="form-control mx-auto w-auto" type="text" placeholder="Answer">
+        </div>
+        <div style="text-align: center">
+          <button class="btn btn-primary" type="submit">New Kard</button>
+        </div>
+      </form>
+    </div>
+{% endblock %}
