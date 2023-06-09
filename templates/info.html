@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Info
+{% endblock %}
+
+{% block main %}
+<div class="container text-center mt-3 mb-5">
+    <h1>Information</h1>
+</div>
+<div class="container text-center my-4 w-50">
+    Memory Kards is a flashcard application where the user can create cards to help memorize concepts of anything interesting for the user.
+    It was developed as the final project for CS50x 2023.
+</div>
+<div class="container text-center my-4 w-50">
+    Each card contains a question and an answer to it, and optionally a tag name, which can be used as filter when selecting which cards to read
+    in the train section. Questions must be unique, while answers can be the same for multiple cards.
+</div>
+<div class="container text-center my-4 w-50">
+    It's also possible to delete and edit existing cards if the user wants to.
+</div>
+{% endblock %}

@@ -25,7 +25,8 @@ with app.app_context():
 @app.route("/")
 def home():
     number = db.paginate(db.Select(Card)).total
-    return render_template("home.html", number=number)
+    num_of_tags = db.paginate(db.select(Card.tag).distinct()).total
+    return render_template("home.html", number=number, num_of_tags=num_of_tags)
 
 
 @app.get("/info")
@@ -42,7 +43,10 @@ def new_kard():
 def train():
     if request.method == "POST":
         filter = request.form.get("filter")
-        cards = db.session.execute(db.select(Card).where(Card.tag == filter)).scalars()
+        if filter == "all":
+            cards = db.session.execute(db.select(Card)).scalars()
+        else:
+            cards = db.session.execute(db.select(Card).where(Card.tag == filter)).scalars()
     else:
         cards = db.session.execute(db.select(Card)).scalars()
     tags = db.session.execute(db.select(Card.tag).distinct().order_by(Card.tag)).scalars()
@@ -55,6 +59,8 @@ def add_card():
     q = request.form.get("question")
     a = request.form.get("answer")
     t = request.form.get("tag").title()
+    if not t:
+        t = "Untagged"
 
     new_card = Card(question = q, answer = a, tag = t)
 
