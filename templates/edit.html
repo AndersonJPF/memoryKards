@@ -20,10 +20,10 @@
     <div>
       <form action="/edit/{{ card.id }}" method="post">
         <div class="mb-3">
-          <input id="question" name="question" class="form-control mx-auto w-auto" type="text" placeholder="Question">
+          <input id="question" name="question" class="form-control mx-auto w-auto" type="text" placeholder="Question" required>
         </div>
         <div class="mb-3">
-          <input id="answer" name="answer" class="form-control mx-auto w-auto" type="text" placeholder="Answer">
+          <input id="answer" name="answer" class="form-control mx-auto w-auto" type="text" placeholder="Answer" required>
         </div>
         <div style="text-align: center">
           <button class="btn btn-primary" type="submit">Edit Kard</button>

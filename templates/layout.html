@@ -21,9 +21,23 @@
               <li class="nav-item">
                 <a class="nav-link" href="/create">Create</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/info">Info</a>
+              </li>
             </ul>
         </div>
     </nav>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <header>
+          {% for message in messages %}
+          <div class="alert alert-primary" role="alert">
+            {{ message }}
+          </div> 
+          {% endfor %}
+        </header>
+      {% endif %}
+    {% endwith %}
     {% block main %}{% endblock %}
     <footer class="my-5 small text-center text-muted">
         Created by <a href="https://github.com/AndersonJPF" target="_blank">Anderson Freire</a>

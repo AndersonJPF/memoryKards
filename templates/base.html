@@ -5,15 +5,31 @@
 {% endblock %}
 
 {% block main %}
+      <form action="/train" method="post">
+        <div class="my-3 mx-3" style="text-align: center;">
+        <label for="filter">Choose a Filter:</label>
+        <select id="filter" name="filter">
+          {% for tag in tags %}
+            <option value="{{ tag }}">{{ tag }}</option>
+          {% endfor %}
+        </div>
+        </select>
+      </form>
     {% for card in cards %}
       <div class="container d-flex justify-content-center align-items-center my-3">
-        <div class="card w-50 mx-1 align-items-center justify-content-center" style="background-color: bisque; min-height: 120px;">
-            <div>
-                {{ card.question }} 
-            </div>
-            <div>
-                {{ card.answer }}
-            </div>
+        <div class="card w-50 mx-1 align-items-center justify-content-center" style="background-color: bisque; min-height: 140px;">
+          <div style="position: absolute; top: 0; left: 7px;">
+             {{ card.tag }}
+          </div>
+          <div>
+            {{ card.question }} 
+          </div>
+          <div class="d-none" id="{{ card.id }}">
+            {{ card.answer }}
+          </div>
+          <div class="my-2">
+            <button type="button" class="btn btn-primary" onclick="showAnswer('{{ card.id | tojson | safe }}', this)">Show Answer</button>
+          </div>
         </div>
         <div>
           <a class="btn btn-primary" href="/delete/{{ card.id }}">Delete</a>
@@ -21,4 +37,15 @@
         </div>
       </div>
     {% endfor %}
+    <script>
+      function showAnswer(id, element) {
+        document.getElementById(id).classList.toggle('d-none');
+        if (element.innerHTML == 'Show Answer') {
+          element.innerHTML = 'Hide Answer';
+        }
+        else {
+          element.innerHTML = 'Show Answer';
+        }
+      }
+    </script>
 {% endblock %}

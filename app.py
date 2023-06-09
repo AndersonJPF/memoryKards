@@ -1,10 +1,13 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cards.db"
+migrate = Migrate(app, db)
 db.init_app(app)
 
 class Card(db.Model):
@@ -12,60 +15,71 @@ class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String, unique=True, nullable=False)
     answer = db.Column(db.String, nullable=False)
+    tag = db.Column(db.String)
 
-Card.__tablename__ = 'cards'
-
-class Tag(db.Model):
-    __tablename__ = 'tags'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True, nullable=False)
-
-class Feature(db.Model):
-    __tablename__ = 'features'
-    id = db.Column(db.Integer, primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'))
-    card_id = db.Column(db.Integer, db.ForeignKey('cards.id'))
 
 with app.app_context():
     db.create_all()
 
+
 @app.route("/")
 def home():
     number = db.paginate(db.Select(Card)).total
-    print(number)
-    return render_template("home.html")
+    return render_template("home.html", number=number)
+
+
+@app.get("/info")
+def get_info():
+    return render_template("info.html")
+
 
 @app.get("/create")
 def new_kard():
     return render_template("create.html")
 
 
-@app.route("/train")
+@app.route("/train", methods=["GET", "POST"])
 def train():
-    cards = db.session.execute(db.select(Card)).scalars()
-    return render_template("base.html", cards=cards)
+    if request.method == "POST":
+        filter = request.form.get("filter")
+        cards = db.session.execute(db.select(Card).where(Card.tag == filter)).scalars()
+    else:
+        cards = db.session.execute(db.select(Card)).scalars()
+    tags = db.session.execute(db.select(Card.tag).distinct().order_by(Card.tag)).scalars()
+
+    return render_template("base.html", cards=cards, tags=tags)
+
 
 @app.post("/add")
 def add_card():
     q = request.form.get("question")
     a = request.form.get("answer")
+    t = request.form.get("tag").title()
 
-    new_card = Card(question = q, answer = a)
+    new_card = Card(question = q, answer = a, tag = t)
 
     try:
         db.session.add(new_card)
         db.session.commit()
     except exc.IntegrityError:
+        flash("Card Already Exists!", 'error')
         return redirect("/")
     
+    flash("Card Successfully added!", 'info')
     return redirect("/")
 
-@app.get("/delete/<int:card_id>")
+
+@app.route("/delete/<int:card_id>", methods=['GET', 'POST'])
 def delete_card(card_id: int):
-    card = db.session.execute(db.select(Card).filter_by(id=card_id)).scalar_one()
-    db.session.delete(card)
-    db.session.commit()
-    return redirect("/")
+    if request.method == "POST":
+        card = db.session.execute(db.select(Card).filter_by(id=card_id)).scalar_one()
+        db.session.delete(card)
+        db.session.commit()
+        flash("Card Successfully deleted!", 'info')
+        return redirect("/")
+    else:
+        return render_template("delete_card.html", card_id=card_id)
+    
 
 @app.route("/edit/<int:card_id>", methods=["GET", "POST"])
 def edit_card(card_id: int):
@@ -76,7 +90,10 @@ def edit_card(card_id: int):
             card.answer = request.form.get("answer")
             db.session.commit()
         except exc.IntegrityError:
+            flash("There's a card with this question alrady!", 'error')
             return redirect("/")
+        
+        flash("Card Successfully edited!", 'info')
         return redirect("/")
     else:
         return render_template("edit.html", card=card)
