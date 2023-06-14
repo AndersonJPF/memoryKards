@@ -7,7 +7,10 @@
 {% block main %}
     <p style="text-align: center;">Current Kard</p>
     <div class="container d-flex justify-content-center align-items-center mb-3">
-        <div class="card w-50 mx-1 align-items-center justify-content-center" style="background-color: bisque; min-height: 120px;">
+        <div class="card w-50 mx-1 align-items-center justify-content-center" style="background-color: #FFEB3B; min-height: 140px;">
+            <div style="position: absolute; top: 0; left: 7px;">
+                {{ card.tag }}
+            </div>
             <div>
                 {{ card.question }} 
             </div>
@@ -16,14 +19,17 @@
             </div>
         </div>
     </div>
-    <p style="text-align: center;">New Kard</p>
+    <p style="text-align: center;">Edit Kard</p>
     <div>
       <form action="/edit/{{ card.id }}" method="post">
         <div class="mb-3">
-          <input id="question" name="question" class="form-control mx-auto w-auto" type="text" placeholder="Question" required>
+          <input id="question" name="question" class="form-control mx-auto w-auto" type="text" placeholder="Question">
         </div>
         <div class="mb-3">
-          <input id="answer" name="answer" class="form-control mx-auto w-auto" type="text" placeholder="Answer" required>
+          <input id="answer" name="answer" class="form-control mx-auto w-auto" type="text" placeholder="Answer">
+        </div>
+        <div class="mb-3">
+          <input id="tag" name="tag" class="form-control mx-auto w-auto" type="text" placeholder="Kard Tag">
         </div>
         <div style="text-align: center">
           <button class="btn btn-primary" type="submit">Edit Kard</button>

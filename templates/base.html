@@ -19,7 +19,7 @@
       </form>
     {% for card in cards %}
       <div class="container d-flex justify-content-center align-items-center my-3">
-        <div class="card w-50 mx-1 align-items-center justify-content-center" style="background-color: bisque; min-height: 140px;">
+        <div class="card w-50 mx-1 align-items-center justify-content-center" style="background-color: #FFEB3B; min-height: 140px;">
           <div style="position: absolute; top: 0; left: 7px;">
              {{ card.tag }}
           </div>
@@ -30,7 +30,7 @@
             {{ card.answer }}
           </div>
           <div class="my-2">
-            <button type="button" class="btn btn-primary" onclick="showAnswer('{{ card.id | tojson | safe }}', this)">Show Answer</button>
+            <button type="button" class="btn btn-success" onclick="showAnswer('{{ card.id | tojson | safe }}', this)">Show Answer</button>
           </div>
         </div>
         <div>

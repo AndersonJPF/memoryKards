@@ -92,8 +92,12 @@ def edit_card(card_id: int):
     card = db.session.execute(db.select(Card).filter_by(id=card_id)).scalar_one()
     if request.method == "POST":
         try:
-            card.question = request.form.get("question")
-            card.answer = request.form.get("answer")
+            if request.form.get("question"):
+                card.question = request.form.get("question")
+            if request.form.get("answer"):
+                card.answer = request.form.get("answer")
+            if request.form.get("tag"):
+                card.tag = request.form.get("tag").title()
             db.session.commit()
         except exc.IntegrityError:
             flash("There's a card with this question alrady!", 'error')

@@ -19,9 +19,9 @@ be tagged as 'untagged'.
 
 ## Technologies used
 
-Front-end: HTML, Bootstrap & JavaScript
-Back-end: Python & Flask
-Database: SQL Alchemy
+* Front-end: HTML, Bootstrap & JavaScript
+* Back-end: Python & Flask
+* Database: SQL Alchemy
 
 ## How to use
 
@@ -29,11 +29,11 @@ Database: SQL Alchemy
 2. Open a virtual environment is the folder the repository is located (Optional but recommended);
 3. Install all the requirements listed in requirements.txt.
 
-## Demonstration
+## Video demonstration
 
-Coming soon.
+Youtube URL: https://www.youtube.com/watch?v=FLku8b9ZGrs
 
-## Potential Improvements
+## Potential improvements
 
 If you wish to fork this project and keep improving it, feel free to do so. Here are some features that could be added:
 
